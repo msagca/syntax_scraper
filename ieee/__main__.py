@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 import antlr4
 import argparse
 import pdfplumber
-
 if __name__ is not None and "." in __name__:
     from .bnfLexer import bnfLexer
     from .bnfParser import bnfParser
@@ -16,27 +14,11 @@ else:
 
 def main():
     arg_parser = argparse.ArgumentParser()
-    arg_parser.add_argument(
-        "input_file", help="IEEE language standard document (format: PDF)"
-    )
-    arg_parser.add_argument(
-        "-n", required=True, metavar="grammar_name", help="ANTLR4 grammar name"
-    )
-    arg_parser.add_argument(
-        "-s",
-        type=int,
-        metavar="start_page",
-        help="formal syntax start page (default: first page)",
-    )
-    arg_parser.add_argument(
-        "-e",
-        type=int,
-        metavar="end_page",
-        help="formal syntax end page (default: last page)",
-    )
-    arg_parser.add_argument(
-        "--split", action="store_true", help="create a split grammar"
-    )
+    arg_parser.add_argument("input_file", help="IEEE language standard document (format: PDF)")
+    arg_parser.add_argument("-n", required=True, metavar="grammar_name", help="ANTLR4 grammar name")
+    arg_parser.add_argument("-s", type=int, metavar="start_page", help="formal syntax start page (default: first page)",)
+    arg_parser.add_argument("-e", type=int, metavar="end_page", help="formal syntax end page (default: last page)",)
+    arg_parser.add_argument("--split", action="store_true", help="create a split grammar")
     args = arg_parser.parse_args()
     syntax_text = ""
     with pdfplumber.open(args.input_file) as pdf:

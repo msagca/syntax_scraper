@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 if __name__ is not None and "." in __name__:
     from .bnfParser import bnfParser
     from .bnfParserVisitor import bnfParserVisitor
@@ -11,7 +10,7 @@ else:
 class Scraper(bnfParserVisitor):
     def __init__(self):
         super().__init__()
-        self.hier_level = 0
+        self.level = 0
         self.tokens = set()
 
     def visit(self, tree):
@@ -26,59 +25,15 @@ class Scraper(bnfParserVisitor):
             c = node.getChild(i)
             result = c.accept(self)
             if result == None:
-                return "'Error!'"
+                result = ""
             text += result
-        if not text:
-            return "'Error!'"
         return text
 
     def visitTerminal(self, node):
         return node.getText()
 
     def getLexerRules(self):
-        char_names = {
-            '"': "DQ",
-            "-": "MI",
-            ",": "CO",
-            ";": "SC",
-            ":": "CL",
-            "!": "EM",
-            "?": "QM",
-            ".": "DT",
-            "'": "AP",
-            "(": "LP",
-            ")": "RP",
-            "[": "LB",
-            "]": "RB",
-            "{": "LC",
-            "}": "RC",
-            "@": "AT",
-            "*": "AS",
-            "/": "SL",
-            "\\": "BS",
-            "&": "AM",
-            "#": "HA",
-            "%": "MO",
-            "`": "GA",
-            "^": "CA",
-            "+": "PL",
-            "<": "LT",
-            "=": "EQ",
-            ">": "GT",
-            "|": "VL",
-            "~": "TI",
-            "$": "DL",
-            "0": "ZERO",
-            "1": "ONE",
-            "2": "TWO",
-            "3": "THREE",
-            "4": "FOUR",
-            "5": "FIVE",
-            "6": "SIX",
-            "7": "SEVEN",
-            "8": "EIGHT",
-            "9": "NINE",
-        }
+        char_names = {'"': "DQ", "-": "MI", ",": "CO", ";": "SC", ":": "CL", "!": "EM", "?": "QM", ".": "DT", "'": "AP", "(": "LP", ")": "RP", "[": "LB", "]": "RB", "{": "LC", "}": "RC", "@": "AT", "*": "AS", "/": "SL", "\\": "BS", "&": "AM", "#": "HA", "%": "MO", "`": "GA", "^": "CA", "+": "PL", "<": "LT", "=": "EQ", ">": "GT", "|": "VL", "~": "TI", "$": "DL", "0": "ZERO", "1": "ONE", "2": "TWO", "3": "THREE", "4": "FOUR", "5": "FIVE", "6": "SIX", "7": "SEVEN", "8": "EIGHT", "9": "NINE"}
         text = ""
         for token in sorted(self.tokens):
             rule_name = ""
@@ -88,7 +43,15 @@ class Scraper(bnfParserVisitor):
                 else:
                     rule_name += char.upper()
             text += f"\n{rule_name} : '{token}' ;"
-        text += "\nCOMMENT : ( BLOCK_COMMENT | ONE_LINE_COMMENT ) -> channel(HIDDEN) ;\nIDENTIFIER : [a-zA-Z] [a-zA-Z0-9_]* ;\nSTRING_LITERAL : '\"' ( ~[\\r\\n\"\\\\] | '\\\\' [nt\\\\\"] )* '\"' ;\nUNSIGNED_NUMBER : [1-9] [0-9]* ;\nWHITE_SPACE : [ \\t\\r\\n]+ -> skip ;\nfragment BLOCK_COMMENT : '/*' .*? '*/' ;\nfragment ONE_LINE_COMMENT : '//' ~[\\r\\n]* ;"
+        text += """
+COMMENT : ( BLOCK_COMMENT | ONE_LINE_COMMENT ) -> channel(HIDDEN) ;
+IDENTIFIER : [a-zA-Z] [a-zA-Z0-9_]* ;
+STRING_LITERAL : '\"' ( ~[\\r\\n\"\\\\] | '\\\\' [nt\\\\\"] )* '\"' ;
+UNSIGNED_NUMBER : [1-9] [0-9]* ;
+WHITE_SPACE : [ \\t\\r\\n]+ -> skip ;
+fragment BLOCK_COMMENT : '/*' .*? '*/' ;
+fragment LINE_COMMENT : '//' ~[\\r\\n]* ;
+"""
         return text
 
     def visitFormal_syntax(self, ctx: bnfParser.Formal_syntaxContext):
@@ -101,7 +64,7 @@ class Scraper(bnfParserVisitor):
         return f"{self.visit(ctx.rule_identifier())}\n\t: {self.visit(ctx.rule_alternatives())}\n\t;"
 
     def visitRule_alternatives(self, ctx: bnfParser.Rule_alternativesContext):
-        if self.hier_level == 0:
+        if self.level == 0:
             text = ""
             for i, alt in enumerate(ctx.alternative()):
                 if i > 0:
@@ -118,23 +81,23 @@ class Scraper(bnfParserVisitor):
         return self.visitChildren(ctx)
 
     def visitOptional_item(self, ctx: bnfParser.Optional_itemContext):
-        self.hier_level += 1
+        self.level += 1
         text = self.visit(ctx.rule_alternatives())
         left_index, right_index = ctx.getSourceInterval()
         if right_index - left_index > 2:
             text = f"( {text} )"
         text += "?"
-        self.hier_level -= 1
+        self.level -= 1
         return text
 
     def visitRepeated_item(self, ctx: bnfParser.Repeated_itemContext):
-        self.hier_level += 1
+        self.level += 1
         text = self.visit(ctx.rule_alternatives())
         left_index, right_index = ctx.getSourceInterval()
         if right_index - left_index > 2:
             text = f"( {text} )"
         text += "*"
-        self.hier_level -= 1
+        self.level -= 1
         return text
 
     def visitRule_identifier(self, ctx: bnfParser.Rule_identifierContext):

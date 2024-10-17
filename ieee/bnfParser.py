@@ -1,4 +1,4 @@
-# Generated from bnfParser.g4 by ANTLR 4.13.0
+# Generated from bnfParser.g4 by ANTLR 4.13.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -83,7 +83,7 @@ class bnfParser ( Parser ):
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
-        self.checkVersion("4.13.0")
+        self.checkVersion("4.13.2")
         self._interp = ParserATNSimulator(self, self.atn, self.decisionsToDFA, self.sharedContextCache)
         self._predicates = None
 
@@ -115,6 +115,14 @@ class bnfParser ( Parser ):
 
         def getRuleIndex(self):
             return bnfParser.RULE_formal_syntax
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFormal_syntax" ):
+                listener.enterFormal_syntax(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFormal_syntax" ):
+                listener.exitFormal_syntax(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitFormal_syntax" ):
@@ -192,6 +200,14 @@ class bnfParser ( Parser ):
         def getRuleIndex(self):
             return bnfParser.RULE_rule_definition
 
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRule_definition" ):
+                listener.enterRule_definition(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRule_definition" ):
+                listener.exitRule_definition(self)
+
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_definition" ):
                 return visitor.visitRule_definition(self)
@@ -244,6 +260,14 @@ class bnfParser ( Parser ):
 
         def getRuleIndex(self):
             return bnfParser.RULE_rule_alternatives
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRule_alternatives" ):
+                listener.enterRule_alternatives(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRule_alternatives" ):
+                listener.exitRule_alternatives(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_alternatives" ):
@@ -300,6 +324,14 @@ class bnfParser ( Parser ):
 
         def getRuleIndex(self):
             return bnfParser.RULE_alternative
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterAlternative" ):
+                listener.enterAlternative(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitAlternative" ):
+                listener.exitAlternative(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitAlternative" ):
@@ -364,6 +396,14 @@ class bnfParser ( Parser ):
 
         def getRuleIndex(self):
             return bnfParser.RULE_item
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterItem" ):
+                listener.enterItem(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitItem" ):
+                listener.exitItem(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitItem" ):
@@ -434,6 +474,14 @@ class bnfParser ( Parser ):
         def getRuleIndex(self):
             return bnfParser.RULE_optional_item
 
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterOptional_item" ):
+                listener.enterOptional_item(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitOptional_item" ):
+                listener.exitOptional_item(self)
+
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitOptional_item" ):
                 return visitor.visitOptional_item(self)
@@ -484,6 +532,14 @@ class bnfParser ( Parser ):
         def getRuleIndex(self):
             return bnfParser.RULE_repeated_item
 
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRepeated_item" ):
+                listener.enterRepeated_item(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRepeated_item" ):
+                listener.exitRepeated_item(self)
+
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRepeated_item" ):
                 return visitor.visitRepeated_item(self)
@@ -527,6 +583,14 @@ class bnfParser ( Parser ):
         def getRuleIndex(self):
             return bnfParser.RULE_rule_identifier
 
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRule_identifier" ):
+                listener.enterRule_identifier(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRule_identifier" ):
+                listener.exitRule_identifier(self)
+
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_identifier" ):
                 return visitor.visitRule_identifier(self)
@@ -566,6 +630,14 @@ class bnfParser ( Parser ):
         def getRuleIndex(self):
             return bnfParser.RULE_rule_reference
 
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRule_reference" ):
+                listener.enterRule_reference(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRule_reference" ):
+                listener.exitRule_reference(self)
+
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitRule_reference" ):
                 return visitor.visitRule_reference(self)
@@ -604,6 +676,14 @@ class bnfParser ( Parser ):
 
         def getRuleIndex(self):
             return bnfParser.RULE_keyword_or_punctuation
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterKeyword_or_punctuation" ):
+                listener.enterKeyword_or_punctuation(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitKeyword_or_punctuation" ):
+                listener.exitKeyword_or_punctuation(self)
 
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitKeyword_or_punctuation" ):
